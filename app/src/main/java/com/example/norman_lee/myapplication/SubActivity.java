@@ -30,6 +30,9 @@ public class SubActivity extends AppCompatActivity {
         //TODO 4.9 Implement saving to shared preferences for the contents of the EditText widget
 
         //TODO 3.5 Get references to the editText widgets
+        buttonBackToCalculator = findViewById(R.id.buttonBackToCalculator);
+        editTextSubValueOfA = findViewById(R.id.editTextSubValueA);
+        editTextSubValueOfB = findViewById(R.id.editTextSubValueB);
         //TODO 3.6 Get a reference to the Back To Calculator Button
         //TODO 3.7 Set up setOnClickListener
         //TODO 3.8 Obtain the values stored in the editTextWidgets
@@ -37,7 +40,23 @@ public class SubActivity extends AppCompatActivity {
         //TODO 3.10 Set up an explicit intent and pass the exchange rate back to MainActivity
         //TODO 3.11 Decide how you are going to handle a divide-by-zero situation
         //TODO 3.12 Decide how you are going to handle a situation when the editText widgets are empty
-
+        buttonBackToCalculator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String valueA = editTextSubValueOfA.getText().toString();
+                String valueB = editTextSubValueOfB.getText().toString();
+                try {
+                    double exchangeRate = ExchangeRate.calculateExchangeRate(valueA, valueB);
+                    Intent intent = new Intent(SubActivity.this, MainActivity.class);
+                    intent.putExtra(INTENT_EXCH_RATE, exchangeRate);
+                    startActivity(intent);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(SubActivity.this, "Please enter a value", Toast.LENGTH_SHORT).show();
+                } catch (ArithmeticException e) {
+                    Toast.makeText(SubActivity.this, "Cannot divide by zero", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     //TODO 4.10 Don't forget to override onPause()

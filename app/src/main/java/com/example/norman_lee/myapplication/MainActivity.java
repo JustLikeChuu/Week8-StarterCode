@@ -37,24 +37,51 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //TODO 4.5 Get a reference to the sharedPreferences object
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         //TODO 4.6 Retrieve the value using the key, and set a default when there is none
-
+        exchangeRate = Double.parseDouble(mPreferences.getString(RATE_KEY, "2.95"));
         //TODO 3.13 Get the intent and retrieve the exchange rate passed to it
-
+        Intent intent = getIntent();
+        if (intent != null) {
+            exchangeRate = intent.getDoubleExtra(SubActivity.INTENT_EXCH_RATE, exchangeRate);
+        }
         //TODO 2.1 Use findViewById to get references to the widgets in the layout
-
+        buttonConvert = findViewById(R.id.buttonConvert);
+        buttonSetExchangeRate = findViewById(R.id.buttonSetExchangeRate);
+        editTextValue = findViewById(R.id.editTextValue);
+        textViewResult = findViewById(R.id.textViewResult);
+        textViewExchangeRate = findViewById(R.id.textViewExchangeRate);
         //TODO 2.2 Assign a default exchange rate of 2.95 to the textView
-
+        textViewExchangeRate.setText(String.valueOf(exchangeRate));
         //TODO 2.3 Set up setOnClickListener for the Convert Button
-        //TODO 2.4 Display a Toast & Logcat message if the editTextValue widget contains an empty string
-        //TODO 2.5 If not, calculate the units of B with the exchange rate and display it
-
+        buttonConvert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO 2.4 Display a Toast & Logcat message if the editTextValue widget contains an empty string
+                if (editTextValue.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please enter a value", Toast.LENGTH_LONG).show(); // pop up text at bottom of screen
+                    Log.d(TAG, "Please enter a value");
+                } else {
+                    //TODO 2.5 If not, calculate the units of B with the exchange rate and display it
+                    double value = Double.parseDouble(editTextValue.getText().toString());
+                    double result = value * exchangeRate;
+                    textViewResult.setText(String.valueOf(result));
+                }
+            }
+        });
 
         //TODO 3.1 Modify the Android Manifest to specify that the parent of SubActivity is MainActivity
+        //check AndroidManifest.xml
         //TODO 3.2 Get a reference to the Set Exchange Rate Button
         //TODO 3.3 Set up setOnClickListener for this
-        //TODO 3.4 Write an Explicit Intent to get to SubActivity
-
+        buttonSetExchangeRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO 3.4 Write an Explicit Intent to get to SubActivity
+                Intent intent = new Intent(MainActivity.this, SubActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -100,8 +127,13 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO 4.3 override the methods in the Android Activity Lifecycle here
     //TODO 4.4 for each of them, write a suitable string to display in the Logcat
-
-    //TODO 4.7 In onPause, get a reference to the SharedPreferences.Editor object
-    //TODO 4.8 store the exchange rate using the putString method with a key
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //TODO 4.7 In onPause, get a reference to the SharedPreferences.Editor object
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        //TODO 4.8 store the exchange rate using the putString method with a key
+        preferencesEditor.putString(RATE_KEY, String.valueOf(exchangeRate));
+        preferencesEditor.apply();
+    }
 }
