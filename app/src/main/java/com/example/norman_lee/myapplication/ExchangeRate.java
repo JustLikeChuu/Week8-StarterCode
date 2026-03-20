@@ -1,7 +1,15 @@
 package com.example.norman_lee.myapplication;
 
-public class ExchangeRate {
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
+public class ExchangeRate extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sub);
+    }
     public static double calculateExchangeRate(){
         return 2.95;
     }

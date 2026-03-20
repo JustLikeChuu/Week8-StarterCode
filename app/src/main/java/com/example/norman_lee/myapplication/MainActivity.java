@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //TODO 3.1 Modify the Android Manifest to specify that the parent of SubActivity is MainActivity
-        //check AndroidManifest.xml
         //TODO 3.2 Get a reference to the Set Exchange Rate Button
         //TODO 3.3 Set up setOnClickListener for this
         buttonSetExchangeRate.setOnClickListener(new View.OnClickListener() {
@@ -105,21 +104,37 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO 4.1 Go to res/menu/menu_main.xml and add a menu item Set Exchange Rate
     //TODO 4.2 In onOptionsItemSelected, add a new if-statement and code accordingly
-
     //TODO 5.1 Go to res/menu/menu_main.xml and add a menu item Open Map App
     //TODO 5.2 In onOptionsItemSelected, add a new if-statement
     //TODO 5.3 code the Uri object and set up the intent
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        // to identify which specific button is pressed -> grabs ID
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.setExchangeRate) {
+            Intent intent = new Intent(MainActivity.this, ExchangeRate.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.setOpenMapApp) { // 5.2 and 5.3
+            String location = "SUTD";
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("geo").opaquePart("0.0").appendQueryParameter("q", location);
+            Uri geoLocation = builder.build();
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(geoLocation);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -136,4 +151,11 @@ public class MainActivity extends AppCompatActivity {
         preferencesEditor.putString(RATE_KEY, String.valueOf(exchangeRate));
         preferencesEditor.apply();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart called");
+    }
+    // so and so forth
 }

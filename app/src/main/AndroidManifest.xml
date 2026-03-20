@@ -20,7 +20,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".SubActivity"
-            android:parentActivityName=".MainActivity"></activity> <!-- TODO 3.1, links back button to main activity -->
+            android:parentActivityName=".MainActivity"></activity>
+        <!-- TODO 3.1, links back button to main activity -->
+        <activity
+            android:name=".ExchangeRate"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>

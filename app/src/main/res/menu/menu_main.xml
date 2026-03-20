@@ -4,6 +4,18 @@
     tools:context="com.example.norman_lee.myapplication.MainActivity">
 
     <item
+        android:id="@+id/setExchangeRate"
+        android:orderInCategory="100"
+        android:title="@string/set_exchange_rate"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/setOpenMapApp"
+        android:orderInCategory="100"
+        android:title="@string/set_open_map_app"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
